@@ -5,8 +5,6 @@ import java.util.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
-
-
 public class StudentRepository {
 
     private Map<String, Student> studentMap;
@@ -29,9 +27,16 @@ public class StudentRepository {
 
     public void saveStudentTeacherPair(String student, String teacher) {
         if (studentMap.containsKey(student) && teacherMap.containsKey(teacher)) {
-            teacherStudentMapping
-                    .computeIfAbsent(teacher, k -> new ArrayList<>())
-                    .add(student);
+           if(teacherStudentMapping.containsKey(teacher)){
+               List<String> temp = teacherStudentMapping.get(teacher);
+               temp.add(student);
+               teacherStudentMapping.put(teacher,temp);
+           }
+           else{
+               List<String> temp=new ArrayList<>();
+               temp.add(student);
+               teacherStudentMapping.put(teacher,temp);
+           }
         }
     }
 
